@@ -246,7 +246,10 @@ namespace Hsiang
 
             GameObject img = _slotCell[0];
             GetComponent<RectMask2D>().enabled = false;
-            img.GetComponent<EazeUIEffect>().PlayShrink(3, 3);            
+            img.GetComponent<EazeUIEffect>().PlayShrink(3, 3);
+            //img.GetComponent<EazeUIEffect>().PlayRotate(1, 1);
+            //img.GetComponent<EazeUIEffect>().PlayStrike(new Vector3(30, 0, 0), 1);
+
             yield return new WaitForSeconds(1);
             img.transform.localScale = new Vector3(1f, 1f, 1f);
             GetComponent<RectMask2D>().enabled = true;

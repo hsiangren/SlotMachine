@@ -46,8 +46,8 @@ namespace Hsiang
                 if (_isShow)
                     yield break;
 
-                canvasGroup.alpha -= 0.05f;
-                yield return new WaitForSeconds(0.05f);
+                canvasGroup.alpha -= Time.deltaTime;
+                yield return null;
             }
 
             gameObject.SetActive(false);
@@ -64,8 +64,8 @@ namespace Hsiang
                 if (_isShow == false)
                     yield break;
 
-                canvasGroup.alpha += 0.05f;
-                yield return new WaitForSeconds(0.05f);
+                canvasGroup.alpha += Time.deltaTime;
+                yield return null;
             }
 
         }

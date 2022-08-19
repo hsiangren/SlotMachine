@@ -39,13 +39,14 @@ namespace Hsiang
 
         IEnumerator OnHide()
         {
+            float speed = 1.5f;
             Vector3 orgScale = new Vector3(1, 1, 1);
-            for (int i = 1; i <= 20; i++ )
+            for (float dt = 0; dt < 1;)
             {
-                float dt = i * 0.05f;
-                dt = EasingFunction.EaseInElastic(0, 1, dt);                
-                _img.transform.localScale = orgScale * (1 - dt);
-                yield return new WaitForSeconds(0.05f /1.5f);
+                dt += Time.deltaTime * speed;
+                float easeDt = EasingFunction.EaseInElastic(0, 1, dt);                
+                _img.transform.localScale = orgScale * (1 - easeDt);
+                yield return null;
             }
 
             gameObject.SetActive(false);
@@ -55,13 +56,13 @@ namespace Hsiang
         IEnumerator OnShow()
         {
             Vector3 orgScale = new Vector3(1, 1, 1);
-            for (int i = 1; i <= 20; i++)
+
+            for (float dt = 0; dt < 1 ;  )
             {
-                float dt = i * 0.05f;
-                //dt = EasingFunction.EaseInElastic(0, 1, dt);
-                dt = EasingFunction.EaseOutElastic(0, 1, dt);
-                _img.transform.localScale = orgScale * dt;
-                yield return new WaitForSeconds(0.05f);
+                dt += Time.deltaTime;
+                float easeDt = EasingFunction.EaseOutElastic(0, 1, dt);
+                _img.transform.localScale = orgScale * easeDt;
+                yield return null;
             }
 
             if( _closeTime > 0 )

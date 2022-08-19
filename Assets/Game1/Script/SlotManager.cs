@@ -96,7 +96,7 @@ namespace Hsiang
             return true;
         }
 
-        public async void SpinClick()
+        public void SpinClick()
         {
             if(_state == StateEnum.None)
             {

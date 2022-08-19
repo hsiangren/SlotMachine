@@ -61,8 +61,10 @@ namespace Hsiang
 
             for(int i = 0; i < times; i++ )
             {
-                for( int j = 0; j < 10; j++ )
+                for( float dt = 0; dt < 1; )
                 {
+                    dt += Time.deltaTime * speed;
+
                     if(_OnShrinkThreadProc == State.OnStop)
                     {
                         _OnShrinkThreadProc = State.None;
@@ -70,16 +72,16 @@ namespace Hsiang
                         yield break;
                     }
 
-                    float dt;// = j * speed*0.1f;
-                    if(j <= 5)
-                        dt = j *  0.2f;
+                    float exDt;
+                    if (dt < 0.5f)
+                        exDt = dt;
                     else
-                        dt = (10-j) * 0.2f;
+                        exDt = (1 - dt);
 
-                    Vector3 scale = orgScale *(1+ dt * 0.2f );
+                    Vector3 scale = orgScale *(1+ exDt * 0.4f );
                     transform.localScale = scale;
 
-                    yield return new WaitForSeconds(0.1f/speed);
+                    yield return null;
                 }
             }
             _OnShrinkThreadProc = State.None;
@@ -88,15 +90,16 @@ namespace Hsiang
         IEnumerator ThreadStrike(Vector3 maxPos , float speed)
         {
             Vector3 orgPos = transform.localPosition;
-            
-            for( int i = 1; i <= 20; i++)
+
+            for (float dt = 0; dt < 1;)
             {
-                float angle = Mathf.PI * i / 4;
-                float dt = (i+1) * 0.05f;
+                dt += Time.deltaTime * speed;
+
+                float angle = Mathf.PI * dt * 5;// i / 4;
 
                 float dpos = Mathf.Sin(angle)*(1-dt);
                 transform.localPosition = orgPos + maxPos * dpos;
-                yield return new WaitForSeconds(0.05f / speed);
+                yield return null;
             }
         }
 
@@ -117,15 +120,18 @@ namespace Hsiang
             if (times < 0)
                 times = int.MaxValue;
 
-            speed = 360.0f / 20.0f / speed;
+//            speed = 360.0f / speed;
 
-            for (int i = 0; i < times; i++)
+            for (float totalTime = 0; totalTime < times; )
             {
                 if (_OnRotateThreadProc == State.OnStop)
                     break;
 
-                transform.Rotate(0, 0, speed);
-                yield return new WaitForSeconds(0.05f );                
+                float dt = Time.deltaTime * speed;
+                totalTime += dt;
+
+                transform.Rotate(0, 0, 360* dt);
+                yield return null;
             }
             transform.localRotation = orgAngle;
             _OnRotateThreadProc = State.None;
@@ -160,8 +166,8 @@ namespace Hsiang
                         yield break;
                     }
 
-                    canvasGroup.alpha += 0.05f*speed;
-                    yield return new WaitForSeconds(0.05f);
+                    canvasGroup.alpha += Time.deltaTime*speed;
+                    yield return null;
                 }
                 while (canvasGroup.alpha > 0)
                 {
@@ -172,8 +178,8 @@ namespace Hsiang
                         yield break;
                     }
 
-                    canvasGroup.alpha -= 0.05f*speed;
-                    yield return new WaitForSeconds(0.05f);
+                    canvasGroup.alpha -= Time.deltaTime * speed;
+                    yield return null;
                 }
             }
             _OnFlikerThreadProc = State.None;
